@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  </style>
+</head>
+<body>
+  <div id="results">
+    <table>
+      <thead>
+        <th>Channel</th>
+        <th>Command</th>
+        <th>Response</th>
+        <th>Permission</th>
+      </thead>
+    </table>
+  </div>
+
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+  <script>
+  const dbUrl = 'https://gist.githubusercontent.com/megadrive/0692bd3c28fd991e8422144e073a82d8/raw/370546e2803b7a11e9d7b5e6c04c6a203a9e81bc/database.json'
+  const channel = window.location.hash || null
+
+  $.getJSON(dbUrl, {}, function (remoteData) {
+    let data = remoteData
+
+    let dataToShow = {}
+    if (channel) {
+      dataToShow = _.filter(data.Command, function (command) {
+        return command.channel === channel
+      })
+  
+      dataToShow.forEach(function (el) {
+        $('#results table').append('<tr class="command">'
+          + '<td class="channelName">' + el.channel.slice(1) + '</td>'
+          + '<td class="command">' + el.command + '</td>'
+          + '<td class="response">' + el.text + '</td>'
+          + '<td class="permission">' + (el.permission ? el.permission : 'anyone') + '</td>'
+          + '</tr>')
+      })
+    }
+  })
+
+  </script>
+</body>
+</html>
