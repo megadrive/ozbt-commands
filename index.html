@@ -10,13 +10,14 @@
 </head>
 <body>
   <div id="results">
-    <table>
+    <table id="sort" class="sortable-theme-minimal">
       <thead>
         <th>Channel</th>
         <th>Command</th>
         <th>Response</th>
         <th>Permission</th>
       </thead>
+      <tbody></tbody>
     </table>
   </div>
 
@@ -25,6 +26,9 @@
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+
+  <script src="sortable.min.js"></script>
+  <link rel="stylesheet" href="sortable-theme-minimal.css">
   <script>
   const dbUrl = 'https://gist.githubusercontent.com/megadrive/0692bd3c28fd991e8422144e073a82d8/raw/370546e2803b7a11e9d7b5e6c04c6a203a9e81bc/database.json'
   const channel = window.location.hash || null
@@ -57,13 +61,16 @@
       })
   
       dataToShow.forEach(function (el) {
-        $('#results table').append('<tr class="command">'
+        $('#results table tbody').append('<tr class="command">'
           + '<td class="channelName">' + el.channel.slice(1) + '</td>'
           + '<td class="command">' + el.command + '</td>'
           + '<td class="response">' + linkify(el.text) + '</td>'
           + '<td class="permission">' + (el.permission ? el.permission : 'anyone') + '</td>'
           + '</tr>')
       })
+
+      $('#sort').attr('data-sortable', true)
+      Sortable.initTable(document.querySelector('#sort'))
     }
   })
 
